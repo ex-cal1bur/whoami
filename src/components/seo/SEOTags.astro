@@ -16,10 +16,26 @@ const DEFAULT_URL_SITE = SITE_URL;
 const openGraph = {
   title: title || og?.title || DEFAULT_TITLE_PAGE,
   type: og?.type || "website",
-  image: og?.image || "/opengraph-image.jpg",  // idealmente imagen tuya o logo personal
+  image: og?.image || "/opengraph-image.jpg",
   alt: og?.alt || "Daniel Miranda Barcelona portfolio image",
   url: DEFAULT_URL_SITE,
   description: og?.description || DEFAULT_DESCRIPTION_PAGE,
+};
+
+// JSON-LD Schema for Person & Website
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Daniel Miranda Barcelona",
+  "alternateName": "Excal1bur",
+  "url": DEFAULT_URL_SITE,
+  "sameAs": [
+    "https://www.linkedin.com/in/daniel-miranda-barcelona/",
+    "https://github.com/ex-cal1bur"
+  ],
+  "jobTitle": "Cybersecurity Enthusiast and Pentester",
+  "description": DEFAULT_DESCRIPTION_PAGE,
+  "image": openGraph.image,
 };
 ---
 
@@ -29,7 +45,8 @@ const openGraph = {
     title={title || DEFAULT_TITLE_PAGE}
     description={description || DEFAULT_DESCRIPTION_PAGE}
     noindex={noindex || false}
-    keywords="Daniel Miranda, Excal1bur, cybersecurity, pentesting, OSCP, ethical hacking, CTF, seguridad informática, portfolio"
+    keywords="Daniel Miranda, Excal1bur, cybersecurity, pentesting, OSCP, ethical hacking, CTF, seguridad informática, portfolio, hacking ético, pentester junior"
+    canonical={DEFAULT_URL_SITE}
     openGraph={{
       basic: {
         title: openGraph.title,
@@ -43,7 +60,7 @@ const openGraph = {
       },
     }}
     twitter={{
-      creator: "@Excal1bur",  // cambia al usuario real o el que uses profesionalmente
+      creator: "@Excal1bur",
       site: "@Excal1bur",
       cardType: "summary_large_image",
     }}
@@ -51,15 +68,17 @@ const openGraph = {
       link: [
         { rel: "icon", href: "/favicon.svg" },
         { rel: "sitemap", href: "/sitemap.xml" },
+        { rel: "alternate", href: DEFAULT_URL_SITE, hreflang: "es" }, // para indicar idioma
       ],
       meta: [
         { name: "viewport", content: "width=device-width, initial-scale=1" },
         { name: "generator", content: Astro.generator },
-        { name: "keywords", content: "Daniel Miranda, Excal1bur, cybersecurity, pentesting, OSCP, ethical hacking, CTF, seguridad informática, portfolio" },
+        { name: "keywords", content: "Daniel Miranda, Excal1bur, cybersecurity, pentesting, OSCP, ethical hacking, CTF, seguridad informática, portfolio, hacking ético, pentester junior" },
         { name: "twitter:image", content: openGraph.image },
         { name: "twitter:title", content: openGraph.title },
         { name: "twitter:description", content: openGraph.description },
         { name: "twitter:site", content: "@Excal1bur" },
+        { name: "robots", content: noindex ? "noindex, nofollow" : "index, follow" },
       ],
     }}
   />
@@ -78,4 +97,7 @@ const openGraph = {
       },
     ]}
   />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 </head>
